@@ -411,29 +411,33 @@ We're going to create another folder in `components` called `partials`; this wil
 
 We're going to create a component called `Header` which will contain our `nav` and nested `Link` tags. We'll wrap it all in a `<header>` tag to maintain semantic structure. This also allows us to add a bit more to this header later if we want \(Like a logo\).
 
+```bash
+mkdir src/components/partials
+touch src/components/partials/Header.js
+```
+
 **REMEMBER**! Since we're taking our `<Link>` components out of `App.js`, we'll need to import them, same as any other imported component.
 
 Here's what your `Header.js` should look like:
 
 ```jsx
-import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-class Header extends Component {
-  render() {
+const Header = (props) => {
     return (
-      <header>
-        <nav>
-          <Link to="/">Go to Home Page</Link>{' | '}
-          <Link to="/services">See Our Services</Link>{' | '}
-          <Link to="/contact">Contact Us!</Link>
-        </nav>
-      </header>
-    )
-  }
-}
+        <>
+            <nav>
+                <Link to="/">Go to Home Page</Link>
+                {" | "}
+                <Link to="/services">See Our Services</Link>
+                {" | "}
+                <Link to="/contact">Contact Us!</Link>
+            </nav>
+        </>
+    );
+};
+export default Header;
 
-export default Header
 ```
 
 Next, head to your `App.js` and replace the `nav` with our newly created `Header` component! Much cleaner and well organize! Marie Kondo would be proud!
