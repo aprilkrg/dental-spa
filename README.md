@@ -272,8 +272,6 @@ import {
     Route, 
     Link 
 } from "react-router-dom";
-
-
 ```
 
 ### Fully Routed
@@ -302,7 +300,6 @@ const App = () => {
     );
 };
 export default App;
-
 ```
 
 ## Navigate to the Routes
@@ -490,7 +487,7 @@ The new `element` attribute take the component directly, as well as any props yo
 You should be able to see `services` as props in the React Developer tools.
 > Check it out! Does yours work?
 
-Final **App.js**:
+**App.js**:
 ```javascript
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 
@@ -525,6 +522,25 @@ export default App
 ```
 
 Let's update out Services component to render this new data. Go into the Services component and add the mapping to render this array into the page nicely.
+
+**Services.js**
+```javascript
+const Services = (props) => {
+    const servicesArr = props.services.map((service, i) => {
+        return <li key={`service-${i}`}>{service}</li>
+    })
+    return (
+        <>
+            <h2>Services Page</h2>
+            <ol>
+              {servicesArr}
+            </ol>
+        </>
+    )
+}
+export default Services
+```
+
 
 ### Route Parameters in React Router
 
