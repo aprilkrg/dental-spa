@@ -448,22 +448,22 @@ Next, head to your `App.js` and replace the `nav` with our newly created `Header
 
 Our Router functionality right now is very cool but it lacks some very important functionality. We only know how to render a default component but we know that we frequently want to give our components props. How do we do that with React Router?
 
-It's actually very easy. Inside of our `<Route>`s we've been using the `component` attribute. If we want more custom control, we can use a function instead but we must change the attribute from `component` to `render`. First, let's simulate some data by adding a simple array into our App's render method:
+#### **react-router-dom v5**
+Inside of our `<Route>`s we've indicated the component to render using the `component` attribute. If we want more custom control, we can use a function instead but we must change the attribute from `component` to `render`. 
 
-```jsx
-render() {
-  let services = [
+First, let's simulate some data by declaring a simple array in App:
+
+```javascript
+let services = [
     "Deep Cleaning",
     "Filling",
     "Gum Massage",
     "Root Canal",
     "Oral Mud Bath"
   ]
-  ...
-}
 ```
 
-We would normally want to pass this data into our Services component as props but there is no way to do that with the `component` attribute. Let's change it to `render`:
+We would normally want to pass this data into our `<Services />` component as props but there is no way to do that with the `component` attribute that v5 uses. To compensate we change it to `render`:
 
 ```javascript
 ...
@@ -474,6 +474,55 @@ We would normally want to pass this data into our Services component as props bu
 ```
 
 By using `render` we can pass in a function that will render a component. We can pass in our services now as props. We must use `render` and pass in a function in order to render a component with props.
+
+#### **react-router-dom v6**
+
+A major difference in the release of v6 is the change from `component` to `element`. You saw the work around that previously used `render` to pass props when using the `component` attribute. v6 makes this a lot easier for us!
+
+The new `element` attribute take the component directly, as well as any props you want to pass. Pass the `services` array to the `<Service />` component like this:
+
+```javascript 
+<Route path="/services/*" 
+    element={<Services services={services}/>} 
+/>
+```
+
+You should be able to see `services` as props in the React Developer tools.
+> Check it out! Does yours work?
+
+Final **App.js**:
+```javascript
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+
+import "./App.css"
+import Home from "./components/pages/Home"
+import Services from "./components/pages/Services"
+import Contact from "./components/pages/Contact"
+import Header from "./components/partials/Header"
+
+const App = () => {
+		let services = [
+			"Deep Cleaning",
+			"Filling",
+			"Gum Massage",
+			"Root Canal",
+			"Oral Mud Bath",
+		]
+		return (
+				<BrowserRouter>
+					<Header />
+					<Routes>
+						<Route path="/" element={<Home />} />
+						<Route path="/services/*" 
+							element={<Services services={services}/>} 
+						/>
+						<Route path="/contact" element={<Contact />} />
+					</Routes>
+				</BrowserRouter>
+		)
+}
+export default App
+```
 
 Let's update out Services component to render this new data. Go into the Services component and add the mapping to render this array into the page nicely.
 
