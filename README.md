@@ -195,25 +195,20 @@ Now that we have our components made, there's nothing stopping us from importing
 **App.js**
 
 ```javascript
-import React, { Component } from 'react';
 import './App.css';
+import Home  from './components/pages/Home'
+import Services  from './components/pages/Services'
+import Contact  from './components/pages/Contact'
 
-import Home from './components/Home';
-import Services from './components/pages/Services';
-import Contact from './components/pages/Contact';
-
-class App extends Component {
-  render() {
-    return (
-      <div>
-        <Home />
-        <Services />
-        <Contact />
-      </div>
-    )
-  }
+const App = () =>  {
+  return (
+    <div className="App">
+      <Home />
+      <Services />
+      <Contact />
+    </div>
+  );
 }
-
 export default App
 ```
 
@@ -227,55 +222,58 @@ Now that we've proven to ourselves that we're able to show each of the component
 
 ### Creating Routes
 
-Here's the general syntax for creating routes. React Router uses some of its own components to define how URLs are routed to your components and to create links to those routes. You must have one `<Router>` component that wraps itself around multiple `<Route>` components. Each `<Route>` component has two pieces:
+Here's the general syntax for creating routes. React Router uses some of its own components to define how URLs are routed to your components and to create links to those routes. You must have one `<Routes>` component that wraps itself around multiple `<Route>` components. Each `<Route>` component has two pieces:
 
 * `path` - defining the URL path that leads to the component.
-* `component` - defining what component users will see when they navigate to the path.
+* `element` - defining what component users will see when they navigate to the path.
 
 Delete what is currently returned in the `render` function of your `App.js`, and replace it with a Router component call with three routes, as shown below.
 
 ```jsx
-class App extends Component {
-  render() {
+import "./App.css";
+import Home from "./components/pages/Home";
+import Services from "./components/pages/Services";
+import Contact from "./components/pages/Contact";
+
+const App = () => {
     return (
-      <Router>
-        <main>
-          <Route exact path="/" component={Home} />
-          <Route path="/services" component={Services} />
-          <Route path="/contact" component={Contact} />
-        </main>
-      </Router>
-    )
-  }
-}
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/services/*" element={<Services />} />
+                <Route path="/contact" element={<Contact />} />
+            </Routes>
+        </BrowserRouter>
+    );
+};
+export default App;
+
 ```
 
 There are three other important things to note here:
 
 * This goes _in place of_ your existing component calls of `<Home />`, `<Services />` and `<Contact />` \(depending on which syntax you went for\).
-* The first route for the homepage at the root URL path `/` uses a special extra `exact` attribute before defining the path. The `exact` attribute means the component associated with the route will only be shown if users are at exactly that URL path. If you forget to include the `exact` keyword, when someone navigates to `/contact` they will actually see two components, because `/` is a partial match for `/contact`.
-* Notice that all of the `<Route>` components are wrapped inside one tag, `<main>`. Like `render`, the `<Router>` element can only have one direct child element. If you don't wrap the routes with a tag like `<div>` or `<main>`, the page will appear blank, and you'll have to open your JavaScript console to see that there's an error being logged to the console. Like so -
-
-![A Router may only have one child element.](../../.gitbook/assets/router-requires-only-one-child.png)
 
 **Pro tip:** It's a good habit to check the console for errors whenever your app is not behaving as expected.
 
 ### Import Statements
 
-In order to use the React Router components in `App.js`, you'll need to import them. This import syntax allows us to grab several specific components out of the `react-router-dom` library at once. So far we've used `Router` and `Route`.
+In order to use the React Router components in `App.js`, you'll need to import them. This import syntax allows us to grab several specific components out of the `react-router-dom` library at once. So far we've used `BrowserRouter`, `Routes`, and `Route`.
 
-The Router component is actually called `BrowserRouter` inside the library package, but we'll use the `as` keyword to rename it to `Router` so it's easier to remember.
 
-While we're here, we'll also import a third component, `Link`, which we'll get to in a minute.
+While we're here, we'll also import a fourth component, `Link`, which we'll get to in a minute.
 
 Put this code at the top of your `App.js`
 
 ```jsx
 import {
-  BrowserRouter as Router,
-  Route,
-  Link
-} from 'react-router-dom';
+    BrowserRouter, 
+    Routes, 
+    Route, 
+    Link 
+} from "react-router-dom";
+
+
 ```
 
 ### Fully Routed
@@ -285,34 +283,26 @@ Here's how the imports and all the components look like together for our dental 
 **App.js**
 
 ```jsx
-import React, { Component } from 'react';
-import './App.css';
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
-import {
-  BrowserRouter as Router,
-  Route,
-  Link
-} from 'react-router-dom';
+import "./App.css";
+import Home from "./components/pages/Home";
+import Services from "./components/pages/Services";
+import Contact from "./components/pages/Contact";
 
-import Home from './components/pages/Home';
-import Services from './components/pages/Services';
-import Contact from './components/pages/Contact';
-
-class App extends Component {
-  render() {
+const App = () => {
     return (
-      <Router>
-        <div>
-          <Route exact path="/" component={Home} />
-          <Route path="/services" component={Services} />
-          <Route path="/contact" component={Contact} />
-        </div>
-      </Router>
-    )
-  }
-}
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/services/*" element={<Services />} />
+                <Route path="/contact" element={<Contact />} />
+            </Routes>
+        </BrowserRouter>
+    );
+};
+export default App;
 
-export default App
 ```
 
 ## Navigate to the Routes
@@ -321,19 +311,15 @@ Now that everything is hooked up you can manually enter different URLs and see h
 
 > Check it!
 >
-> * Make sure that React Router is routing from each URL to the proper component
+> * Make sure that React Router is routing from each URL to the proper component correctly.
 >
->   correctly.
->
-> * Double check to make sure that the home page doesn't display at the same time as another component. If the homepage is shown while you're at the path to `/services` or `/contact` then you probably did not write the `exact` keyword when you defined the `/` Home route.
+
 
 ### Debugging Common Errors
 
-Let's intentionally make an error. Delete the `exact` keyword off the Home route. Navigate to the `/services` page and the `/contact` page again and see how the components are displayed. You should see the content of the homepage and the content for one of the other pages at the same time, with the home page on top.
-
-Now add the `exact` keyword back to the home route and notice that the pages don't double up any more.
-
-Two common errors: 1. If the page appears blank, open the JavaScript console to see if there are errors. Chances are you have a typo somewhere or forgot to make sure the `<Router>` only has one child element. Remember, wrap all of your `<Route>` components in one parent HTML element \(we're using `main`\). 2. If multiple components appear on the page at the same time there's something with how you've routed URLs. Make sure you use the `exact` keyword on the root path `/` and make sure there are no duplicate URL paths defined anywhere.
+Two common errors: 
+1. If the page appears blank, open the JavaScript console to see if there are errors. Chances are you have a typo somewhere. Remember, wrap all of your `<Route>` components in a `<Routes/>` component. 
+2. If multiple components appear on the page at the same time there's something with how you've routed URLs. Make sure you use the `exact` keyword on the root path `/` and make sure there are no duplicate URL paths defined anywhere.
 
 ## Adding a Nav Section
 
