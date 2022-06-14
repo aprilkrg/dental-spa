@@ -71,7 +71,7 @@ You are going to follow along, so that you have a locally working React Router a
 
 Now let's make the dentist project. In your terminal, use `create-react-app` to make a new project called `dental-spa`:
 
-```text
+```bash
 $ npx create-react-app dental-spa
 $ cd dental-spa
 $ npm start
@@ -93,7 +93,7 @@ Make sure you can do simple things first. Don't start with complex things; compl
 
 Let's install **React Router**.
 
-Since React Router is a third-party library, we'll need to use to download React Router and save it as a dependency in our project.
+Since React Router is a third-party library, we'll need to download React Router and save it as a dependency in our project.
 
 In your terminal, enter:
 
@@ -109,9 +109,9 @@ Let's start the app again. Enter the command `npm start` in your terminal.
 
 Let's get rid of the standard "Welcome to React" page and replace it with our own dental spa home page. Continue editing `App.js`: take out most of the JSX contents, and delete the import statement for `logo.svg`, which we won't use.
 
-The `App.js` file contains one component that our whole app will live inside of. Remember that React components have a `render(){ ... }` function that defines what the component will look like when it is rendered on the webpage.
+The `App.js` file contains one component that our whole app will live inside of. Remember that React functional components use `return( ... )` which defines what the component will look like when it is rendered on the webpage.
 
-> Reminder! The render function alway has to return _at most_ one top-level element. It's common to wrap everything in your component in a `div` to make sure you satisfy this constraint.
+> Reminder! The return can send _at most_ one top-level element. It's common to wrap everything in your component in a `div` or React fragment `<>` to make sure you satisfy this constraint.
 
 **So...**
 
@@ -120,22 +120,16 @@ Let's add one `<h1>` that says `Dental Spa` and a paragraph with some short welc
 **App.js**
 
 ```jsx
-import React, { Component } from 'react';
 import './App.css';
 
-class App extends Component {
-  render() {
-    return (
-      <div>
-        <h1>Dental Spa</h1>
-        <p>
-          Welcome to my dental spa.
-        </p>
-      </div>
-    )
-  }
+const App = () =>  {
+  return (
+    <div className="App">
+      <h1>Dental Spa</h1>
+      <p>Welcome to my dental spa.</p>
+    </div>
+  );
 }
-
 export default App
 ```
 
@@ -158,18 +152,15 @@ Your `App.js` and `Home.js` files should look like this after you've properly cr
 **App.js**
 
 ```javascript
-import React, { Component } from 'react';
 import './App.css';
-import Home from './components/pages/Home';
+import Home  from './components/pages/Home'
 
-class App extends Component {
-  render() {
-    return (
-      <main>
-        <Home />
-      </main>
-    )
-  }
+const App = () =>  {
+  return (
+    <div className="App">
+      <Home />
+    </div>
+  );
 }
 export default App
 ```
@@ -177,21 +168,14 @@ export default App
 **Home.js**
 
 ```javascript
-import React, { Component } from 'react';
-
-class Home extends Component {
-  render() {
-    return (
-      <div>
-        <h1>Dental Spa</h1>
-        <p>
-          Welcome to my dental spa.
-        </p>
-      </div>
+const Home = (props) => {
+    return(
+        <>
+            <h1>Dental Spa</h1>
+            <p>Welcome to my dental spa.</p>
+        </>
     )
-  }
 }
-
 export default Home
 ```
 
