@@ -8,11 +8,16 @@ import Contact from "./components/pages/Contact";
 const App = () => {
     return (
         <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/services/*" element={<Services />} />
-                <Route path="/contact" element={<Contact />} />
-            </Routes>
+          <nav>
+            <Link to="/">Go to Home Page</Link>{' | '}
+            <Link to="/services">See Our Services</Link>{' | '}
+            <Link to="/contact">Contact Us!</Link>
+          </nav>
+          <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/services/*" element={<Services />} />
+              <Route path="/contact" element={<Contact />} />
+          </Routes>
         </BrowserRouter>
     );
 };

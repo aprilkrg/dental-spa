@@ -319,22 +319,22 @@ Now that everything is hooked up you can manually enter different URLs and see h
 
 Two common errors: 
 1. If the page appears blank, open the JavaScript console to see if there are errors. Chances are you have a typo somewhere. Remember, wrap all of your `<Route>` components in a `<Routes/>` component. 
-2. If multiple components appear on the page at the same time there's something with how you've routed URLs. Make sure you use the `exact` keyword on the root path `/` and make sure there are no duplicate URL paths defined anywhere.
+2. Make sure each `<Route/>` has a `path` and an `element` - if you're upgrading from an older version to react-router-dom v6 check the [documentation](https://reactrouter.com/docs/en/v6/upgrading/v5#upgrade-to-react-router-v6) for any other breaking changes you experience
 
 ## Adding a Nav Section
 
 Great, now our site is up and running! We can manually type in URLs and see the different pages.
 
-Although... users never really type URLs, do they? We should probably have links at the top of the page so we can just click on things. We could build this ourselves, but we don't have to! Remember that `Link` component we imported from React Router?
+Although... users never really type URLs, do they? We should  have links at the top of the page so we can just click on things. We could build this ourselves, but we don't have to! Remember that `Link` component we imported from React Router?
 
 Just like links in HTML, we can wrap `<Link>` tags around whatever text that we want to display to the user to click on. The pieces of this are:
 
 * `<Link>` - creates `<a>` tags and automatically integrates modern HTML5 browser history mechanics for the Single Page Application. It has one attribute:
-* `to` - what path to navigate to when the user clicks the link
+* `to` - what relative path to navigate to when the user clicks the link
 
 We'll add one `<Link>` component that leads to each of our different content pages.
 
-```markup
+```javascript
 <Link to="/">Go to Home Page</Link>
 <Link to="/services">See Our Services</Link>
 <Link to="/contact">Contact Us!</Link>
@@ -344,7 +344,7 @@ We'll add one `<Link>` component that leads to each of our different content pag
 
 We can include those links in a `<nav>` element at the top of our page. It will stay on the page permanently, and the different components will be swapped between each other below it. There's actually nothing special about the `<nav>` element. It behaves exactly like a `<div>`. `<nav>` Is just a semantic element that gives your JSX more meaning when people read it.
 
-In your `App.js`, inside the `<Router>` \(because we want it rendered!\) and before the `Route` statements, put:
+In your `App.js`, inside the `<BrowserRouter>` \(because we want it rendered!\) and before the `Routes` statements, put:
 
 ```markup
 <nav>
