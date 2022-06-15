@@ -479,7 +479,7 @@ A major difference in the release of v6 is the change from `component` to `eleme
 The new `element` attribute take the component directly, as well as any props you want to pass. Pass the `services` array to the `<Service />` component like this:
 
 ```javascript 
-<Route path="/services/*" 
+<Route path="/services" 
     element={<Services services={services}/>} 
 />
 ```
@@ -510,7 +510,7 @@ const App = () => {
 					<Header />
 					<Routes>
 						<Route path="/" element={<Home />} />
-						<Route path="/services/*" 
+						<Route path="/services" 
 							element={<Services services={services}/>} 
 						/>
 						<Route path="/contact" element={<Contact />} />
@@ -613,7 +613,15 @@ We're organizing our code, so based on our current file structure, where do you 
 
 `src` is shorthand for `source`, which means our resources need to be in that folder. Our data isn't a component, so it doesn't make sense to put it in there. That leaves us creating a folder in `src` called `data`!
 
+```bash
+mkdir src/data
+```
+
 Since we haven't learned how to query an API in React yet, we're going to make a javascript file that we can then import and utilize! Let's make a `serviceDetails.js` in our `data` folder.
+
+```bash
+touch src/data/serviceDetails.js
+```
 
 In order to mimic data that might be received from and API, we are going to create and export an array of objects for our services. Create a variable called `serviceDetails` that is an array. For each of our services listed in `App.js`, we're going to make an object that has the keys `id`, `name`, `price`, and `description`. Feel free to take some time to create this yourself, or copy this data below!
 
@@ -649,7 +657,8 @@ const serviceDetails = [
         price: 100.00,
         description: 'We shove your face in mud. Very good.'
     }
-];
+]
+export default serviceDetails
 ```
 
 #### Step 2: Make our Component
@@ -658,23 +667,21 @@ We're going to start but simply stubbing out our root. After we implement the ro
 
 We could put this in `pages` or `partials`. What are the arguments for putting it in one? What about for the other?
 
-For now, make a `Service.js` component in `pages` since we're going to be using a route for it. To stub it out, simply have a `div` with an `h3` for the name, an `h6` for the price, and a `p` for the description. It should look something like this:
-
-```jsx
-import React, { Component } from 'react'
-
-class Service extends Component {
-  render() {
+For now, make a `Service.js` component in `pages` since we're going to be using a route for it. 
+```bash
+touch src/components/pages/Service.js
+```
+To stub it out, simply have a `div` with an `h3` for the name, an `p` for the price, and a `p` for the description. It should look something like this:
+```javascript
+const Service = () => {
     return (
-      <div>
-        <h3>Name</h3>
-        <h6>$100.00</h6>
-        <p>description</p>
-      </div>
+        <>
+            <h3>Name</h3>
+            <p>$100.00</p>
+            <p>description</p>
+        </>
     )
-  }
 }
-
 export default Service
 ```
 

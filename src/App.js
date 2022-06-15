@@ -5,6 +5,8 @@ import Home from "./components/pages/Home";
 import Services from "./components/pages/Services";
 import Contact from "./components/pages/Contact";
 import Header from "./components/partials/Header";
+import Service from "./components/pages/Service";
+import serviceDetails from "./data/serviceDetails";
 
 const App = () => {
 		let services = [
@@ -19,8 +21,11 @@ const App = () => {
 					<Header />
 					<Routes>
 						<Route path="/" element={<Home />} />
-						<Route path="/services/*" 
-							element={<Services services={services}/>} 
+						<Route path="/services" 
+							element={<Services services={serviceDetails}/>} 
+						/>
+						<Route path="/services/:id" 
+							element={<Service services={serviceDetails}/>}
 						/>
 						<Route path="/contact" element={<Contact />} />
 					</Routes>
