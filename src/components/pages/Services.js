@@ -1,17 +1,19 @@
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom"
 
 const Services = (props) => {
-    const servicesArr = props.servicesArr.map((service, i) => {
-        return <li key={`service-${i}`}>
-            <Link to={`/services/${service.id}`}>{service.name}</Link>
-        </li>
-    })
+	const servicesArr = props.services.map((service, i) => {
+		return (
+			<li>
+				<Link to={`/services/${service.id}`} key={`service-${i}`}>
+					{service.name}
+				</Link>
+			</li>
+		)
+	})
 	return (
 		<>
-			<h2>Services</h2>
-            <ol>
-                {servicesArr}
-            </ol>
+			<h2>Services Page</h2>
+			{servicesArr}
 		</>
 	)
 }

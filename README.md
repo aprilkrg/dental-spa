@@ -2,8 +2,6 @@
 
 ## ![](https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png) React Router
 
-***NOTE: THIS LESSON IS WRITTEN IN REACT ROUTER VERSION 5, UPDATE COMING SOON***
-
 #### Learning Objectives
 
 _After this code-along section, you will be able to:_
@@ -71,7 +69,7 @@ You are going to follow along, so that you have a locally working React Router a
 
 Now let's make the dentist project. In your terminal, use `create-react-app` to make a new project called `dental-spa`:
 
-```text
+```bash
 $ npx create-react-app dental-spa
 $ cd dental-spa
 $ npm start
@@ -93,7 +91,7 @@ Make sure you can do simple things first. Don't start with complex things; compl
 
 Let's install **React Router**.
 
-Since React Router is a third-party library, we'll need to use to download React Router and save it as a dependency in our project.
+Since React Router is a third-party library, we'll need to download React Router and save it as a dependency in our project.
 
 In your terminal, enter:
 
@@ -109,33 +107,26 @@ Let's start the app again. Enter the command `npm start` in your terminal.
 
 Let's get rid of the standard "Welcome to React" page and replace it with our own dental spa home page. Continue editing `App.js`: take out most of the JSX contents, and delete the import statement for `logo.svg`, which we won't use.
 
-The `App.js` file contains one component that our whole app will live inside of. Remember that React components have a `render(){ ... }` function that defines what the component will look like when it is rendered on the webpage.
+The `App.js` file contains one component that our whole app will live inside of. Remember that React functional components use `return( ... )` which defines what the component will look like when it is rendered on the webpage.
 
-> Reminder! The render function alway has to return _at most_ one top-level element. It's common to wrap everything in your component in a `div` to make sure you satisfy this constraint.
+> Reminder! The return can send _at most_ one top-level element. It's common to wrap everything in your component in a `div` or React fragment `<>` to make sure you satisfy this constraint.
 
 **So...**
 
 Let's add one `<h1>` that says `Dental Spa` and a paragraph with some short welcome text. Your `App.js` file should now look like the code below. Save the file and check your browser to make sure the changes show up.
 
 **App.js**
-
-```jsx
-import React, { Component } from 'react';
+```javascript
 import './App.css';
 
-class App extends Component {
-  render() {
-    return (
-      <div>
-        <h1>Dental Spa</h1>
-        <p>
-          Welcome to my dental spa.
-        </p>
-      </div>
-    )
-  }
+const App = () =>  {
+  return (
+    <div className="App">
+      <h1>Dental Spa</h1>
+      <p>Welcome to my dental spa.</p>
+    </div>
+  );
 }
-
 export default App
 ```
 
@@ -156,42 +147,30 @@ We've been editing `App.js`, which defines one component for our entire applicat
 Your `App.js` and `Home.js` files should look like this after you've properly created and imported the `Home` component.
 
 **App.js**
-
 ```javascript
-import React, { Component } from 'react';
 import './App.css';
-import Home from './components/pages/Home';
+import Home  from './components/pages/Home'
 
-class App extends Component {
-  render() {
-    return (
-      <main>
-        <Home />
-      </main>
-    )
-  }
+const App = () =>  {
+  return (
+    <div className="App">
+      <Home />
+    </div>
+  );
 }
 export default App
 ```
 
 **Home.js**
-
 ```javascript
-import React, { Component } from 'react';
-
-class Home extends Component {
-  render() {
-    return (
-      <div>
-        <h1>Dental Spa</h1>
-        <p>
-          Welcome to my dental spa.
-        </p>
-      </div>
+const Home = (props) => {
+    return(
+        <>
+            <h1>Dental Spa</h1>
+            <p>Welcome to my dental spa.</p>
+        </>
     )
-  }
 }
-
 export default Home
 ```
 
@@ -209,27 +188,21 @@ You can put your own content to be rendered by each component if you'd like.
 Now that we have our components made, there's nothing stopping us from importing multiple components into our App.js. So now, we have:
 
 **App.js**
-
 ```javascript
-import React, { Component } from 'react';
 import './App.css';
+import Home  from './components/pages/Home'
+import Services  from './components/pages/Services'
+import Contact  from './components/pages/Contact'
 
-import Home from './components/Home';
-import Services from './components/pages/Services';
-import Contact from './components/pages/Contact';
-
-class App extends Component {
-  render() {
-    return (
-      <div>
-        <Home />
-        <Services />
-        <Contact />
-      </div>
-    )
-  }
+const App = () =>  {
+  return (
+    <div className="App">
+      <Home />
+      <Services />
+      <Contact />
+    </div>
+  );
 }
-
 export default App
 ```
 
@@ -243,56 +216,55 @@ Now that we've proven to ourselves that we're able to show each of the component
 
 ### Creating Routes
 
-Here's the general syntax for creating routes. React Router uses some of its own components to define how URLs are routed to your components and to create links to those routes. You must have one `<Router>` component that wraps itself around multiple `<Route>` components. Each `<Route>` component has two pieces:
+Here's the general syntax for creating routes. React Router uses some of its own components to define how URLs are routed to your components and to create links to those routes. You must have one `<Routes>` component that wraps itself around multiple `<Route>` components. Each `<Route>` component has two pieces:
 
 * `path` - defining the URL path that leads to the component.
-* `component` - defining what component users will see when they navigate to the path.
+* `element` - defining what component users will see when they navigate to the path.
 
 Delete what is currently returned in the `render` function of your `App.js`, and replace it with a Router component call with three routes, as shown below.
 
-```jsx
-class App extends Component {
-  render() {
+```javascript
+import "./App.css";
+import Home from "./components/pages/Home";
+import Services from "./components/pages/Services";
+import Contact from "./components/pages/Contact";
+
+const App = () => {
     return (
-      <Router>
-        <main>
-          <Route exact path="/" component={Home} />
-          <Route path="/services" component={Services} />
-          <Route path="/contact" component={Contact} />
-        </main>
-      </Router>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/services/*" element={<Services />} />
+                <Route path="/contact" element={<Contact />} />
+            </Routes>
+        </BrowserRouter>
     )
-  }
 }
+export default App
 ```
 
 There are three other important things to note here:
 
 * This goes _in place of_ your existing component calls of `<Home />`, `<Services />` and `<Contact />` \(depending on which syntax you went for\).
-* The first route for the homepage at the root URL path `/` uses a special extra `exact` attribute before defining the path. The `exact` attribute means the component associated with the route will only be shown if users are at exactly that URL path. If you forget to include the `exact` keyword, when someone navigates to `/contact` they will actually see two components, because `/` is a partial match for `/contact`.
-* Notice that all of the `<Route>` components are wrapped inside one tag, `<main>`. Like `render`, the `<Router>` element can only have one direct child element. If you don't wrap the routes with a tag like `<div>` or `<main>`, the page will appear blank, and you'll have to open your JavaScript console to see that there's an error being logged to the console. Like so -
-
-![A Router may only have one child element.](../../.gitbook/assets/router-requires-only-one-child.png)
 
 **Pro tip:** It's a good habit to check the console for errors whenever your app is not behaving as expected.
 
 ### Import Statements
 
-In order to use the React Router components in `App.js`, you'll need to import them. This import syntax allows us to grab several specific components out of the `react-router-dom` library at once. So far we've used `Router` and `Route`.
+In order to use the React Router components in `App.js`, you'll need to import them. This import syntax allows us to grab several specific components out of the `react-router-dom` library at once. So far we've used `BrowserRouter`, `Routes`, and `Route`.
 
-The Router component is actually called `BrowserRouter` inside the library package, but we'll use the `as` keyword to rename it to `Router` so it's easier to remember.
 
-While we're here, we'll also import a third component, `Link`, which we'll get to in a minute.
+While we're here, we'll also import a fourth component, `Link`, which we'll get to in a minute.
 
-Put this code at the top of your `App.js`
+Put this code at the top of your `App.js`:
 
-```jsx
+```javascript
 import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Link
-} from 'react-router-dom';
+    BrowserRouter, 
+    Routes, 
+    Route, 
+    Link 
+} from "react-router-dom";
 ```
 
 ### Fully Routed
@@ -300,31 +272,26 @@ import {
 Here's how the imports and all the components look like together for our dental spa:
 
 **App.js**
-
 ```javascript
-import './App.css';
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
-import { BrowserRouter, Routes,Route} from 'react-router-dom';
+import "./App.css";
+import Home from "./components/pages/Home";
+import Services from "./components/pages/Services";
+import Contact from "./components/pages/Contact";
 
-import Home from './components/pages/Home';
-import Services from './components/pages/Services';
-import Contact from './components/pages/Contact';
-
-class App extends Component {
-  render() {
+const App = () => {
     return (
-      <Router>
-        <div>
-          <Route exact path="/" component={Home} />
-          <Route path="/services" component={Services} />
-          <Route path="/contact" component={Contact} />
-        </div>
-      </Router>
-    )
-  }
-}
-
-export default App
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/services/*" element={<Services />} />
+                <Route path="/contact" element={<Contact />} />
+            </Routes>
+        </BrowserRouter>
+    );
+};
+export default App;
 ```
 
 ## Navigate to the Routes
@@ -333,34 +300,29 @@ Now that everything is hooked up you can manually enter different URLs and see h
 
 > Check it!
 >
-> * Make sure that React Router is routing from each URL to the proper component
+> * Make sure that React Router is routing from each URL to the proper component correctly.
 >
->   correctly.
->
-> * Double check to make sure that the home page doesn't display at the same time as another component. If the homepage is shown while you're at the path to `/services` or `/contact` then you probably did not write the `exact` keyword when you defined the `/` Home route.
 
 ### Debugging Common Errors
 
-Let's intentionally make an error. Delete the `exact` keyword off the Home route. Navigate to the `/services` page and the `/contact` page again and see how the components are displayed. You should see the content of the homepage and the content for one of the other pages at the same time, with the home page on top.
-
-Now add the `exact` keyword back to the home route and notice that the pages don't double up any more.
-
-Two common errors: 1. If the page appears blank, open the JavaScript console to see if there are errors. Chances are you have a typo somewhere or forgot to make sure the `<Router>` only has one child element. Remember, wrap all of your `<Route>` components in one parent HTML element \(we're using `main`\). 2. If multiple components appear on the page at the same time there's something with how you've routed URLs. Make sure you use the `exact` keyword on the root path `/` and make sure there are no duplicate URL paths defined anywhere.
+Two common errors: 
+1. If the page appears blank, open the JavaScript console to see if there are errors. Chances are you have a typo somewhere. Remember, wrap all of your `<Route>` components in a `<Routes/>` component. 
+2. Make sure each `<Route/>` has a `path` and an `element` - if you're upgrading from an older version to react-router-dom v6 check the [documentation](https://reactrouter.com/docs/en/v6/upgrading/v5#upgrade-to-react-router-v6) for any other breaking changes you experience
 
 ## Adding a Nav Section
 
 Great, now our site is up and running! We can manually type in URLs and see the different pages.
 
-Although... users never really type URLs, do they? We should probably have links at the top of the page so we can just click on things. We could build this ourselves, but we don't have to! Remember that `Link` component we imported from React Router?
+Although... users never really type URLs, do they? We should  have links at the top of the page so we can just click on things. We could build this ourselves, but we don't have to! Remember that `Link` component we imported from React Router?
 
 Just like links in HTML, we can wrap `<Link>` tags around whatever text that we want to display to the user to click on. The pieces of this are:
 
 * `<Link>` - creates `<a>` tags and automatically integrates modern HTML5 browser history mechanics for the Single Page Application. It has one attribute:
-* `to` - what path to navigate to when the user clicks the link
+* `to` - what relative path to navigate to when the user clicks the link
 
 We'll add one `<Link>` component that leads to each of our different content pages.
 
-```markup
+```javascript
 <Link to="/">Go to Home Page</Link>
 <Link to="/services">See Our Services</Link>
 <Link to="/contact">Contact Us!</Link>
@@ -370,9 +332,9 @@ We'll add one `<Link>` component that leads to each of our different content pag
 
 We can include those links in a `<nav>` element at the top of our page. It will stay on the page permanently, and the different components will be swapped between each other below it. There's actually nothing special about the `<nav>` element. It behaves exactly like a `<div>`. `<nav>` Is just a semantic element that gives your JSX more meaning when people read it.
 
-In your `App.js`, inside the `<Router>` \(because we want it rendered!\) and before the `Route` statements, put:
+In your `App.js`, inside the `<BrowserRouter>` \(because we want it rendered!\) and before the `Routes` statements, put:
 
-```markup
+```javascript
 <nav>
   <Link to="/">Go to Home Page</Link>
   <Link to="/services">See Our Services</Link>
@@ -390,7 +352,7 @@ We must insert a space manually by writing `{' '}` in order to get spaces betwee
 
 So instead of the code we used before, here is how we'll format the links. Nothing has changed except that we've added the space:
 
-```markup
+```javascript
 <Link to="/">Go to Home Page</Link>{' | '}
 <Link to="/services">See Our Services</Link>{' | '}
 <Link to="/contact">Contact Us!</Link>
@@ -405,23 +367,14 @@ Here's what our final `App.js` looks like:
 ```javascript
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom"
 
-import "./App.css"
+import "./App.css";
+import Home from "./components/pages/Home";
+import Services from "./components/pages/Services";
+import Contact from "./components/pages/Contact";
 
-import Home from "./components/pages/Home"
-import Contact from "./components/pages/Contact"
-import Services from "./components/pages/Services"
-import Service from "./components/pages/Service"
-
-function App {
-	let services = [
-		"Deep Cleaning",
-		"Filling",
-		"Gum Massage",
-		"Root Canal",
-		"Oral Mud Bath",
-	]
+const App = () => {
     return (
-      <BrowserRouter>
+        <BrowserRouter>
         <nav>
           <Link to="/">Go to Home Page</Link>{' | '}
           <Link to="/services">See Our Services</Link>{' | '}
@@ -435,7 +388,6 @@ function App {
       </BrowserRouter>
     )
 }
-
 export default App
 ```
 
@@ -451,28 +403,31 @@ We're going to create another folder in `components` called `partials`; this wil
 
 We're going to create a component called `Header` which will contain our `nav` and nested `Link` tags. We'll wrap it all in a `<header>` tag to maintain semantic structure. This also allows us to add a bit more to this header later if we want \(Like a logo\).
 
-**REMEMBER**! Since we're taking our `<Link>` components out of `App.js`, we'll need to import them, same as any other imported component.
+```bash
+mkdir src/components/partials
+touch src/components/partials/Header.js
+```
+
+**REMEMBER**! Since we're taking our `<Link>` components out of `App.js`, we'll need to import it, same as any other imported component.
 
 Here's what your `Header.js` should look like:
 
-```jsx
-import React, { Component } from 'react'
+```javascript
 import { Link } from 'react-router-dom'
 
-class Header extends Component {
-  render() {
+const Header = () => {
     return (
-      <header>
-        <nav>
-          <Link to="/">Go to Home Page</Link>{' | '}
-          <Link to="/services">See Our Services</Link>{' | '}
-          <Link to="/contact">Contact Us!</Link>
-        </nav>
-      </header>
+        <>
+            <nav>
+                <Link to="/">Go to Home Page</Link>
+                {" | "}
+                <Link to="/services">See Our Services</Link>
+                {" | "}
+                <Link to="/contact">Contact Us!</Link>
+            </nav>
+        </>
     )
-  }
 }
-
 export default Header
 ```
 
@@ -484,34 +439,106 @@ Next, head to your `App.js` and replace the `nav` with our newly created `Header
 
 Our Router functionality right now is very cool but it lacks some very important functionality. We only know how to render a default component but we know that we frequently want to give our components props. How do we do that with React Router?
 
-It's actually very easy. Inside of our `<Route>`s we've been using the `component` attribute. If we want more custom control, we can use a function instead but we must change the attribute from `component` to `render`. First, let's simulate some data by adding a simple array into our App's render method:
+#### **react-router-dom v5**
+>  _**This is the outdated way of doing things!**_
 
-```jsx
-render() {
-  let services = [
-    "Deep Cleaning",
-    "Filling",
-    "Gum Massage",
-    "Root Canal",
-    "Oral Mud Bath"
-  ]
-  ...
-}
-```
+Inside of our `<Route>`s we've indicated the component to render using the `component` attribute. If we want more custom control, we can use a function instead but we must change the attribute from `component` to `render`. 
 
-We would normally want to pass this data into our Services component as props but there is no way to do that with the `component` attribute. Let's change it to `render`:
+First, let's simulate some data by declaring a simple array in App:
 
 ```javascript
-...
+let services = [
+  "Deep Cleaning",
+  "Filling",
+  "Gum Massage",
+  "Root Canal",
+  "Oral Mud Bath"
+]
+```
+
+We would normally want to pass this data into our `<Services />` component as props but there is no way to do that with the `component` attribute that v5 uses. To compensate we change it to `render`:
+
+```javascript
 <Route exact path="/" component={Home} />
 <Route path="/services" render={() => <Services services={services} />} />
 <Route path="/contact" component={Contact} />
-...
 ```
 
 By using `render` we can pass in a function that will render a component. We can pass in our services now as props. We must use `render` and pass in a function in order to render a component with props.
 
-Let's update out Services component to render this new data. Go into the Services component and add the mapping to render this array into the page nicely.
+#### **react-router-dom v6**
+> This is the v6 way!
+
+A major difference in the release of v6 is the change from `component` to `element`. You saw the work around that previously used `render` to pass props when using the `component` attribute. v6 makes this a lot easier for us!
+
+The new `element` attribute take the component directly, as well as any props you want to pass. Pass the `services` array to the `<Service />` component like this:
+
+```javascript 
+<Route path="/services" 
+    element={<Services services={services}/>} 
+/>
+```
+
+You should be able to see `services` as props in the React Developer tools.
+> Check it out! Does yours work?
+
+**App.js**:
+```javascript
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+
+import "./App.css"
+import Home from "./components/pages/Home"
+import Services from "./components/pages/Services"
+import Contact from "./components/pages/Contact"
+import Header from "./components/partials/Header"
+
+const App = () => {
+		let services = [
+			"Deep Cleaning",
+			"Filling",
+			"Gum Massage",
+			"Root Canal",
+			"Oral Mud Bath",
+		]
+		return (
+				<BrowserRouter>
+					<Header />
+					<Routes>
+						<Route path="/" element={<Home />} />
+						<Route path="/services" 
+							element={<Services services={services}/>} 
+						/>
+						<Route path="/contact" element={<Contact />} />
+					</Routes>
+				</BrowserRouter>
+		)
+}
+export default App
+```
+
+Let's update out Services component to render this new data. Go into  `Services.js` and add the mapping to render this array into the page nicely.
+
+**Services.js**
+```javascript
+const Services = (props) => {
+    const servicesArr = props.services.map((service, i) => {
+        return <li key={`service-${i}`}>{service}</li>
+    })
+    return (
+        <>
+            <h2>Services Page</h2>
+            <ol>
+              {servicesArr}
+            </ol>
+        </>
+    )
+}
+export default Services
+```
+
+<hr>
+
+**NOTE: WIDGET SECTION NOT UPDATED TO V6**
 
 ### Route Parameters in React Router
 
@@ -560,6 +587,9 @@ export default WidgetShow;
 
 Because the route parameter is passed in via props, we can easily reference it to find the item associated with the parameter. Frequently, we use this to display the details of one specific item in a collection, like in our READ ONE routes.
 
+**NOTE: END OF WIDGET SECTION**
+<hr>
+
 ### Show more about a specific service
 
 Let's use this functionality to render a component that shows more about a specific service! We'll need to:
@@ -568,7 +598,7 @@ Let's use this functionality to render a component that shows more about a speci
 
     1.1. Make a folder for `data`
 
-    1.2.Make a `js` file that will export our data so we can import it to our relevant components _\(eventually this will be data received from querying and API\)_
+    1.2. Make a `js` file that will export our data so we can import it to our relevant components _\(eventually this will be data received from querying and API\)_
 
 2. Make our component
 3. Implement the route for it
@@ -584,11 +614,19 @@ We're organizing our code, so based on our current file structure, where do you 
 
 `src` is shorthand for `source`, which means our resources need to be in that folder. Our data isn't a component, so it doesn't make sense to put it in there. That leaves us creating a folder in `src` called `data`!
 
+```bash
+mkdir src/data
+```
+
 Since we haven't learned how to query an API in React yet, we're going to make a javascript file that we can then import and utilize! Let's make a `serviceDetails.js` in our `data` folder.
+
+```bash
+touch src/data/serviceDetails.js
+```
 
 In order to mimic data that might be received from and API, we are going to create and export an array of objects for our services. Create a variable called `serviceDetails` that is an array. For each of our services listed in `App.js`, we're going to make an object that has the keys `id`, `name`, `price`, and `description`. Feel free to take some time to create this yourself, or copy this data below!
 
-```jsx
+```javascript
 const serviceDetails = [
     {
         id: 1,
@@ -620,82 +658,108 @@ const serviceDetails = [
         price: 100.00,
         description: 'We shove your face in mud. Very good.'
     }
-];
+]
+export default serviceDetails
 ```
 
 #### Step 2: Make our Component
 
-We're going to start but simply stubbing out our root. After we implement the route in our `Router`, we'll go back to it and make sure that we're able to access the parameters.
+We're going to start but simply stubbing out our root. After we implement the route in our `Routes`, we'll go back to it and make sure that we're able to access the parameters.
 
 We could put this in `pages` or `partials`. What are the arguments for putting it in one? What about for the other?
 
-For now, make a `Service.js` component in `pages` since we're going to be using a route for it. To stub it out, simply have a `div` with an `h3` for the name, an `h6` for the price, and a `p` for the description. It should look something like this:
+For now, make a `Service.js` component in `pages` since we're going to be using a route for it. 
 
-```jsx
-import React, { Component } from 'react'
+```bash
+touch src/components/pages/Service.js
+```
 
-class Service extends Component {
-  render() {
+To stub it out, simply have a `div` with an `h3` for the name, an `p` for the price, and a `p` for the description. It should look something like this:
+
+```javascript
+const Service = () => {
     return (
-      <div>
-        <h3>Name</h3>
-        <h6>$100.00</h6>
-        <p>description</p>
-      </div>
+        <>
+            <h3>Name</h3>
+            <p>$100.00</p>
+            <p>description</p>
+        </>
     )
-  }
 }
-
 export default Service
 ```
 
 #### Step 3: Implement the Route
 
-Now that we have a stubbed out route, we need to see if we can render it! In our `App.js`, let's add another `Route` to `/services/:id`. Let's write it the same way that the notes above wrote `Widget`, passing props into the anonymous function and then using the spread operator to pass those to the component itself.
+Now that we have a stubbed out route, we need to see if we can render it! In our `App.js`, let's add another `Route` to `/services/:id`.
 
 > Remember to import your component!
 
-Now, go to `http://localhost:3000/services/test` to see if your stub is rendering! If not, check your `App.js`
+Now, go to `http://localhost:3000/services/1` to see if your stub is rendering! If not, check your `App.js`
 
-```jsx
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+```javascript
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import './App.css';
+import "./App.css";
+import serviceDetails from "./data/serviceDetails";
 
-import Header from './components/partials/Header'
-import Home from './components/pages/Home'
-import Services from './components/pages/Services'
-import Contact from './components/pages/Contact'
-import Service from './components/pages/Service'
+import Home from "./components/pages/Home";
+import Contact from "./components/pages/Contact";
+import Services from "./components/pages/Services";
+import Service from "./components/pages/Service";
+import Header from "./components/partials/Header";
 
-class App extends Component {
-  render() {
-    let services = [
-      "Deep Cleaning",
-      "Filling",
-      "Gum Massage",
-      "Root Canal",
-      "Oral Mud Bath"
-    ]
-    return (
-      <Router>
-        <Header />
-        <main>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/services" render={() => <Services services={services} />} />
-          <Route path="/services/:id" render={(props) => <Service {...props} />} />
-          <Route path="/contact" component={Contact} />
-        </main>
-      </Router>
-    )
-  }
-}
-
+const App = () => {
+		let services = [
+			"Deep Cleaning",
+			"Filling",
+			"Gum Massage",
+			"Root Canal",
+			"Oral Mud Bath",
+		];
+		return (
+				<BrowserRouter>
+					<Header />
+					<Routes>
+						<Route path="/" element={<Home />} />
+						<Route path="/services" 
+							element={<Services services={services}/>} 
+						/>
+						<Route path="/services/:id" 
+							element={<Service services={serviceDetails}/>}
+						/>
+						<Route path="/contact" element={<Contact />} />
+					</Routes>
+				</BrowserRouter>
+		);
+};
 export default App
 ```
 
-Once that's working, we need to check to see if we can get the parameters! In `Service.js`, replace what's in the `h3` tag with `this.props.match.params.id`. Now if you go to `http://localhost:3000/services/hello`, your component will greet you!
+Once that's working, we need to check to see if we can get the parameters! In `Service.js`, pass props and import the `useParams` hook so we can get the id!
+
+**Service.js**
+```javascript
+import {useParams} from 'react-router-dom'
+
+const Service = (props) => {
+    let {id} = useParams()
+    console.log(id, "<<<<")
+    return (
+        <>
+            <h3>Name</h3>
+            <p>$100.00</p>
+            <p>Description</p>
+        </>
+    )
+}
+export default Service
+```
+
+> Check it!
+>
+> * Can you see the hardcoded data on the page, and the id number in the console?
+>
 
 #### Step 4: Get Data based on URL
 
@@ -703,17 +767,48 @@ We can either get data in App and then render our component with secific info or
 
 **Import data**
 
-Importing data from a file is as easy as `import movies from './data/movies'`. In our case, we will import `serviceDetails` and the link will be relative to our `App.js` \(`./data/serviceDetails.js`\). If we want to check if we imported it correctly, we can console log it in our `render` function.
+Importing data from a file is as easy as `import movies from './data/movies'`, as long as our data file exports itself. Check that `serviceDetails` is exporting itself.
+
+**serviceDetails.js**
+```javascript
+...
+export default serviceDetails
+```
+
+In our case, we will import `serviceDetails` and the link will be relative to our `App.js` \(`./data/serviceDetails.js`\). If we want to check if we imported it correctly, we can console log it in our function.
 
 **Getting to match in our Route**
 
-The `render` function in our `Route` component call requires an anonymous function. Since that function gets passed `props`, we are going to use that to get the `match` value and use that with Javascript's build in [find function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find) to get one service and then pass that down to our `Service` component.
+In `Service.js` we'll use props and Javascript's build in [find function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find) to get one service and then pass that down to our `Service` component.
+
+Using the destructured value `id` from `useParams` to find the object we're looking for in the props.services array. Then change the html to render information from that `service` variable.
 
 > The `find` function is an array method. `let matchedElem = array.find(arrayElem => arrayElem === conditional)`
 
-Up until now, we've been using ES6's implicient return with the anonymous functions passed into `render`. However, we want to get the specific service after the route has been called _\(otherwise we don't know which service they are requesting\)_ but before the component is rendered, so are going to perform javascrip logic in there BEFORE we actually render the component.
+Up until now, we've been using ES6's implicit return with the anonymous functions passed into `render`. However, we want to get the specific service after the route has been called _\(otherwise we don't know which service they are requesting\)_ but before the component is rendered, so are going to perform javascript logic in there BEFORE we actually render the component.
 
-In the `render` function of our Service details route, we'll use `array.find` to find a service by comparing the `id` key in a service object with the id acquired from `props.match.params.id`.
+In our Service component, we'll use `array.find` to find a service by comparing the `id` key in a service object with the id acquired from `props.services`.
+
+> This will only work if the `services` being passed to `Service.js` is an array of objects. So make sure in `App.js` that the Service component is recieving `serviceDetails` (an array of objects) as props. 
+
+**Service.js**
+```javascript
+import {useParams} from 'react-router-dom'
+
+const Service = (props) => {
+    let {id} = useParams()
+    const service = props.services.find()
+    console.log(service, "<<<")
+    return (
+        <>
+            <h3>Name</h3>
+            <p>$100.00</p>
+            <p>Description</p>
+        </>
+    )
+}
+export default Service
+```
 
 **You Try**
 
@@ -726,45 +821,34 @@ _Hintssss_
 * If we use the identity operator, how will we account for different types? _\(`id` in our service object is a number, but the `id` from params is a string\)_
 * How do we reference the result of the find later?
 
-Take 5-15 minutes to try to figure out how to impliment this. If you get stuck, look at the hints as well as [documentation on `array.find()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find)
+Take 5-15 minutes to try to figure out how to implement this. If you get stuck, look at the hints as well as [documentation on `array.find()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find)
 
-> Depending on what your component needs, some developers will get just `match` from `props` using destructuring. Many developers who use React Router will use this kind of object destructuring in their code. Note that this method makes other default props \(like `props.history`\) properties unavailable to this component.
->
-> ```jsx
-> <Route path='/services/:id' render={({ match }) => {
->    let id = match.params.id
->    return <Service id={id} />
-> }} />
-> ```
+> Depending on what your component needs, some developers will get just `services` from `props` using destructuring. Many developers who use React Router will use this kind of object destructuring in their code. With the inclusion of the `useHistory` hook, we no longer need to worry about destructing the `props` making other default props \(like `props.history`\) unavailable to this component. Yay v6!!
 
 **Solution**
 
-```jsx
-const service = serviceDetails.find(service => service.id.toString() === props.match.params.id)
+```javascript
+const service = props.services.find(service => service.id.toString() === id)
 ```
 
-Now that we have a specific service object, we can now pass that into our `Service` component. There are a couple of ways that we can do this:
+Now that we have a specific service object, which we will check in the console:
 
-* Pass `Service` a prop called `service` which is the object found by the `array.find()` function.
+```javascript
+import {useParams} from 'react-router-dom'
 
-  _Information will have to be accessed by `this.props.service.name` etc which might get messy in our code_
-
-* Explicitly pass the service values as individual props to our `Service` component.
-
-  _Each value will be added to the `props` object and can be accessed by `this.props.price` etc which can get messy when we return our component_
-
-* Use the spread operator to add the values in `service` to `props` and then use object destructuring syntax \(also `...`\) to pass each of those values to our component.
-
-  _Each value is still added to the `props` object and accessed through it, however it may be easy to overlook what is actually being passed into a component._
-
-We'll use the 3rd method, but each of them has their merits. If you want to choose a different method, then go ahead, but make sure you know how you will reference that data in your `Service` component.
-
-```jsx
-<Route path='/services/:id' render={(props) => {
-    const service = serviceDetails.find(service => service.id.toString() === props.match.params.id)
-    props = {...props, ...service}
-    return <Service {...props} />
-}} />
+const Service = (props) => {
+    let {id} = useParams()
+    const service = props.services.find(service => service.id.toString() === id)
+    console.log(service, "<<<")
+    return (
+        <>
+            <h3>Name</h3>
+            <p>$100.00</p>
+            <p>Description</p>
+        </>
+    )
+}
+export default Service
 ```
 
 #### Update `Services` and `Service` Component
@@ -784,81 +868,71 @@ _Hintsssss_
 
 Check your work \(it doesn't have to look exactly like this, but is functionally similar\)
 
-```jsx
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+```javascript
+import {Link} from 'react-router-dom'
 
-class Services extends Component {
-  render() {
-    let services = this.props.services.map(service => (
-      <li>
-        <Link to={`/services/${service.id}`}>{service.name}</Link>
-      </li>
-    ))
+const Services = (props) => {
+    const servicesArr = props.services.map((service, i) => {
+        return <li>
+            <Link to={`/services/${service.id}`} key={`service-${i}`}>{service.name}</Link>
+        </li>
+    })
     return (
-      <div>
-        <h1>Services</h1>
-        <ul>
-          {services}
-        </ul>
-      </div>
+        <>
+            <h2>Services Page</h2>
+            {servicesArr}
+        </>
     )
-  }
 }
-
 export default Services
 ```
 
-Once we've got the links working, we need to update our component to render the service information it has been given! Replace the `<h3>` with the service name, the `<h6>` with the price, and the `<p>` with the description!
+Once we've got the links working, we need to update our component to render the service information it has been given! Replace the `<h3>` with the service name, the `<p>` with the price, and the `<p>` with the description!
 
 Your code may look a little different if you choose to pass your service data to Service differently.
 
 **Service.js**
+```javascript
+import {useParams} from 'react-router-dom'
 
-```jsx
-import React, { Component } from 'react'
-
-class Service extends Component {
-  render() {
+const Service = (props) => {
+    let {id} = useParams()
+    const service = props.services.find(service => service.id.toString() === id)
     return (
-      <div>
-        <h3>{this.props.name}</h3>
-        <h6>${this.props.price}</h6>
-        <p>{this.props.description}</p>
-      </div>
+        <div key={`service-${service.id}`}>
+            <h3>{service.name}</h3>
+            <p>{service.price}</p>
+            <p>{service.description}</p>
+        </div>
     )
-  }
 }
-
 export default Service
 ```
 
-Finally, we want to add a bit of conditional styling; if someone has gone to an id that doesn't exist yet, we want to display an `<h3>` that simply tells a user that there is not yet a service with that specific id. We'll use and `if...` statement in the `render` function of our `Service` component to render the warning if there is no name \(it won't get passed down if the `array.find()` method in `App.js` didn't match anything\). Else, return as normal!
+Finally, we want to add a bit of conditional styling; if someone has gone to an id that doesn't exist yet, we want to display an `<h3>` that simply tells a user that there is not yet a service with that specific id. We'll use and `if...` statement in our `Service` component to render the warning if there is no id. Else, return as normal!
 
 > Because the code block of the `if` statement is a `return` statement, we don't need to explicitly use `else`; `return` exits the function, so any code after it doesn't get run! But if that condition isn't met, then that initial `return` statement never gets a chance to run, so our normal display shows.
 
 **Service.js**
+```javascript
+import {useParams} from 'react-router-dom'
 
-```jsx
-import React, { Component } from 'react'
-
-class Service extends Component {
-    render() {
-        if (!this.props.name) return <h3>That is not a service we have yet!</h3>
-        return (
-            <div>
-                <h3>{this.props.name}</h3>
-                <h6>${this.props.price}</h6>
-                <p>{this.props.description}</p>
-            </div>
-        )
-    }
+const Service = (props) => {
+    let {id} = useParams()
+    const service = props.services.find(service => service.id.toString() === id)
+    if(!service) return <h3>We don't offer that service.</h3>
+    return (
+        <div key={`service-${service.id}`}>
+            <h3>{service.name}</h3>
+            <p>{service.price}</p>
+            <p>{service.description}</p>
+        </div>
+    )
 }
-
 export default Service
 ```
 
-Try putting in `http://localhost:3000/services/test` to see if you get your conditionally rendered message!
+Try putting in `http://localhost:3000/services/100` to see if you get your conditionally rendered message!
 
 ### Style it!
 
