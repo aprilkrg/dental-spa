@@ -6,7 +6,7 @@ const Service = (props) => {
     return (
         <div key={`service-${service.id}`}>
             <h3>{service.name}</h3>
-            <h6>{service.price}</h6>
+            <p>{service.price}</p>
             <p>{service.description}</p>
         </div>
     )

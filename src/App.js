@@ -1,12 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import "./App.css";
-import Home from "./components/pages/Home";
-import Services from "./components/pages/Services";
-import Contact from "./components/pages/Contact";
-import Header from "./components/partials/Header";
-import Service from "./components/pages/Service";
 import serviceDetails from "./data/serviceDetails";
+
+import Home from "./components/pages/Home";
+import Contact from "./components/pages/Contact";
+import Services from "./components/pages/Services";
+import Service from "./components/pages/Service";
+import Header from "./components/partials/Header";
 
 const App = () => {
 		let services = [
@@ -32,4 +33,4 @@ const App = () => {
 				</BrowserRouter>
 		);
 };
-export default App;
+export default App
