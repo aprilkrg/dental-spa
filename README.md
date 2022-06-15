@@ -288,7 +288,8 @@ Put this code at the top of your `App.js`
 
 ```jsx
 import {
-  BrowserRouter as Router,
+  BrowserRouter,
+  Routes,
   Route,
   Link
 } from 'react-router-dom';
@@ -300,15 +301,10 @@ Here's how the imports and all the components look like together for our dental 
 
 **App.js**
 
-```jsx
-import React, { Component } from 'react';
+```javascript
 import './App.css';
 
-import {
-  BrowserRouter as Router,
-  Route,
-  Link
-} from 'react-router-dom';
+import { BrowserRouter, Routes,Route} from 'react-router-dom';
 
 import Home from './components/pages/Home';
 import Services from './components/pages/Services';
@@ -406,24 +402,38 @@ And now the nav bar will have spaces like it should. Try it!
 
 Here's what our final `App.js` looks like:
 
-```jsx
-class App extends Component {
-  render() {
+```javascript
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom"
+
+import "./App.css"
+
+import Home from "./components/pages/Home"
+import Contact from "./components/pages/Contact"
+import Services from "./components/pages/Services"
+import Service from "./components/pages/Service"
+
+function App {
+	let services = [
+		"Deep Cleaning",
+		"Filling",
+		"Gum Massage",
+		"Root Canal",
+		"Oral Mud Bath",
+	]
     return (
-      <Router>
+      <BrowserRouter>
         <nav>
           <Link to="/">Go to Home Page</Link>{' | '}
           <Link to="/services">See Our Services</Link>{' | '}
           <Link to="/contact">Contact Us!</Link>
         </nav>
-        <main>
-          <Route exact path="/" component={Home} />
-          <Route path="/services" component={Services} />
-          <Route path="/contact" component={Contact} />
-        </main>
-      </Router>
+        <Routes>
+          <Route exact path="/" element={<Home/>} />
+          <Route path="/services" element={<Services/>} />
+          <Route path="/contact" element={<Contact/>} />
+        </Routes>
+      </BrowserRouter>
     )
-  }
 }
 
 export default App

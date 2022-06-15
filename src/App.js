@@ -24,10 +24,15 @@ function App() {
 				<Route path="/" element={<Home />} />
 				<Route path="/contact" element={<Contact />} />
 				<Route path="/services" 
-					element={<Services services={services} servicesArr={serviceDetails}/>} 
+					element={<Services 
+						services={services} 
+						servicesArr={serviceDetails}
+					/>} 
 				/>
 				<Route path="/services/:id" 
-					element={<Service services={serviceDetails} />}
+					element={<Service 
+						services={serviceDetails} 
+					/>}
 				/>
 			</Routes>
 		</BrowserRouter>
